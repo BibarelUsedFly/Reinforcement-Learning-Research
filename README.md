@@ -17,5 +17,6 @@ Por Fijar
 
 * Algoritmo 1 pdf
 * Algorimto 2 pdf
+* Algoritmo 3 pdf
 
 * K hiperparámetro
