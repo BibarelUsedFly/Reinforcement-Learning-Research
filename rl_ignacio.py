@@ -1,8 +1,11 @@
-from red_neuronal import NeuralNetwork 
+from red_neuronal import Net, train_net
 import numpy as np
+from torch.utils.data import DataLoader, TensorDataset
+import torch
+
 
 import gymnasium as gym
-env = gym.make("Pendulum-v1")
+env = gym.make("CartPole-v1")
 
 
 k = 10
@@ -15,11 +18,11 @@ max_steps = 100
 
 training_set = []
 
-net = NeuralNetwork(2, 10, 1)
-
 state, info = env.reset(seed=42)
 
 def calculate_total_reward(states, rewards, actions, context_lenght, gamma=0.1):
+    if len(rewards) < context_lenght:
+        context_lenght = len(rewards)
     state_to_use = states[-context_lenght]
     rewards_to_use = rewards[-context_lenght:]
     action_to_use = actions[-context_lenght]
@@ -64,11 +67,32 @@ for episode in training_set:
     X.append(np.append(episode[0], episode[1]))
     Y.append(episode[2])
 
-
-# train_dataloader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
-
+print('Finished Dataset build')
 
 
-print(X)
-print(Y)
-print(total_reward)
+tensor_x = torch.Tensor(np.array(X)) # transform to torch tensor
+tensor_y = torch.Tensor(np.array(Y))
+
+my_dataset = TensorDataset(tensor_x,tensor_y) # create your datset
+
+
+input_dim = len(state) + 1
+output_dim = 2
+
+net = Net(input_dim, 2)
+
+net = train_net(net, my_dataset)
+
+print('Finished Training')
+
+
+state, info = env.reset()
+test_vector = torch.Tensor(np.append(state, 10))
+# print(np.array(state, 100))
+predict = net(test_vector)
+print(predict)
+
+
+# print(X)
+# print(Y)
+# print(total_reward)
