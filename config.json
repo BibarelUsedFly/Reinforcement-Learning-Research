@@ -1,0 +1,15 @@
+{
+    "NUM_ACTIONS": 1,
+    "NUM_STATES": 8,
+    "NUM_EPISODES": 10000,
+    "NUM_TIMESTEPS": 500,
+    "INPUT_DIM": 9,
+    "OUTPUT_DIM": 4,
+    "NUM_EPOCHS": 100,
+    "LEARNING_RATE": 0.01,
+    "WEIGHTS_PATH": "data/nn.pth",
+    "DATASET_PATH": "data/dataset.npz",
+    "BATCH_SIZE": 8,
+    "WEIGHT_DECAY": 0.001,
+    "DROPOUT_RATE": 0.5
+}
