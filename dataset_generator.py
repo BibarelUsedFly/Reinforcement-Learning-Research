@@ -1,9 +1,7 @@
 import numpy as np
 from utils import save_dataset, load_parameters
 import gymnasium as gym
-import torch
-import torch.nn.functional as F
-from neural_net import DiscreteNet
+
 
 config_file_path = "config.json"
 parameters = load_parameters(config_file_path)
@@ -16,17 +14,6 @@ INPUT_DIM = parameters["INPUT_DIM"]
 OUTPUT_DIM = parameters["OUTPUT_DIM"]
 WEIGHTS_PATH = parameters["WEIGHTS_PATH"]
 DATASET_PATH = parameters["DATASET_PATH"]
-
-
-def get_nn_action(observation, model):
-
-    X = np.hstack((observation, 1.5))
-    X = torch.from_numpy(X).float()
-    y = F.softmax(model(X), dim=0)
-    y = torch.argmax(y)
-    action = y.item()
-
-    return action
 
 
 def compute_cumulative_rewards(arr):
@@ -49,7 +36,6 @@ def generate_dataset(
     all_X = []
     all_y = []
 
-
     for _ in range(num_episodes):
         rewards = np.zeros((num_timesteps, 1))
         states = np.zeros((num_timesteps, num_states))
@@ -66,7 +52,6 @@ def generate_dataset(
             actions[t] = action
 
             episode_length = t + 1
-
 
             if terminated:
                 observation, _ = env.reset()

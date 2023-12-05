@@ -21,7 +21,7 @@ env = gym.make("LunarLander-v2", render_mode="human")
 observation, info = env.reset(seed=42)
 
 model = DiscreteNet(INPUT_DIM, OUTPUT_DIM, DROPOUT_RATE)
-model.load_state_dict(torch.load(WEIGHTS_PATH, map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(WEIGHTS_PATH, map_location=torch.device("cpu")))
 model.eval()
 
 try:
@@ -34,7 +34,7 @@ try:
         for timestamp in range(NUM_TIMESTEPS):
 
             observation, reward, terminated, _, _ = env.step(action)
-            X = np.hstack((observation, 1.5))
+            X = np.hstack((observation, 10))
             X = torch.from_numpy(X).float()
 
             y = F.softmax(model(X), dim=0)
